@@ -1,38 +1,38 @@
-# ������Ƶ��PHP-SDK ˵��
+# 网易视频云PHP-SDK 说明
 
-## 1 ���
+## 1 简介
 
-PHP-SDK�����ڷ������˵㲥�ϴ��������������߰����ṩ�򵥡���ݵķ����������û������ϴ���Ƶ��ͼƬ�ļ��Ĺ��ܡ�
+PHP-SDK是用于服务器端点播上传的软件开发工具包，提供简单、便捷的方法，方便用户开发上传视频或图片文件的功能。
 
-## 2 ��������
+## 2 功能特性
 
-1. �ļ��ϴ�
-2. �ϵ�����
+1. 文件上传
+2. 断点续传
 
-## 3 ����׼��
+## 3 开发准备
 
-### 3.1 ��������
+### 3.1 环境配置
 
-1. PHP5.3����֧��Sqlite3
-2. ��װcomposerʹ��PHP�����Զ����ػ���
+1. PHP5.3以上支持Sqlite3
+2. 安装composer使用PHP的类自动加载机制
 
-### 3.2 ������
+### 3.2 类引入
 
 ```php
 use VideoCloud\Storage\UploadManager;
 ```
 
-## 4 ʹ��˵��
+## 4 使用说明
 
-### 4.1 ��װcomposer
+### 4.1 安装composer
 
-1. windows�ֶ����ذ�װ ����ַ��https://getcomposer.org/doc/00-intro.md
+1. windows手动下载安装 ，网址：https://getcomposer.org/doc/00-intro.md
 
-2. ʹ�������а�װ��ϸ��composer����
+2. 使用命令行安装详细见composer官网
 
-   ps:�����cmd�����룺composer -version���ְ汾����˵����װ�ɹ�
+   ps:如果打开cmd，输入：composer -version出现版本号则说明安装成功
 
-3. ����composer��Ҫ����Ŀ�ĸ�Ŀ¼�°���һ��`composer.json`���ļ�
+3. 启动composer需要在项目的根目录下包含一个`composer.json`的文件
 
    #### composer.json
 
@@ -65,16 +65,16 @@ use VideoCloud\Storage\UploadManager;
    }
    ```
 
-4. ��?`composer.json`?��?`autoload`?�ֶ��������Լ��� autoloader
+4. 在 `composer.json` 的 `autoload` 字段中增加自己的 autoloader
 
-   **������˵����**
+   **配置项说明：**
 
-   * `VideoCloud\\`�������ռ�����ƣ�������Ǹ�Ŀ¼
-   * `files`����Ҫ�Զ����ص�php�ļ�
+   * `VideoCloud\\`是命名空间的名称，后面的是根目录
+   * `files`是需要自动加载的php文件
 
-5. Ҳ����ֱ�Ӹ���demo�е�`composer.json`�ļ�,����������Ŀ¼��Ҫ�޸ĳ���Ŀ��ӦĿ¼
+5. 也可以直接复制demo中的`composer.json`文件,但上面两个目录需要修改成项目相应目录
 
-6. �������Զ����ػ������ļ��ĸ�Ŀ¼�»���һ��`autoload.php`�ļ�
+6. 启动类自动加载机制在文件的根目录下还有一个`autoload.php`文件
 
    ```php
    <?php
@@ -93,14 +93,14 @@ use VideoCloud\Storage\UploadManager;
    require_once  __DIR__ . '/src/VideoCloud/functions.php';
    ```
 
-### 4.2  ��ʼ��
+### 4.2  初始化
 
-������Ƶ�Ƶ㲥����Ҫӵ��һ����Ч�� appKey �� appSecret����ǩ����֤����ͨ�����²����ã�
+接入视频云点播，需要拥有一对有效的 appKey 和 appSecret进行签名认证，可通过如下步骤获得：
 
-1. ��ͨ��Ƶ�Ƶ㲥����
-2. ��½��Ƶ�ƿ�����ƽ̨��ͨ����������̨->�˻���Ϣ��ȡ appKey �� appSecret��
+1. 开通视频云点播服务；
+2. 登陆视频云开发者平台，通过管理控制台->账户信息获取 appKey 和 appSecret。
 
-�ڻ�ȡ�� AppKey �� AppSecret ֮�󣬿ɰ������·�ʽ���г�ʼ����
+在获取到 AppKey 和 AppSecret 之后，可按照如下方式进行初始化：
 
 ```js
 $uploadMgr = new UploadManager();
@@ -118,41 +118,41 @@ if ($err !== null) {
 }
 ```
 
-**������˵����**
+**配置项说明：**
 
-1. $opt["accessKey"]��AppKey
-2. $opt["secretKey"]��AppSecret
-3. $opt["trunkSize"]����Ƭ��С�����4MB
+1. $opt["accessKey"]：AppKey
+2. $opt["secretKey"]：AppSecret
+3. $opt["trunkSize"]：分片大小，最大4MB
 
-### 4.3 �ļ��ϴ�
+### 4.3 文件上传
 
-����upload�ӿڣ�����init()����ֵ���ļ�·����������ļ��ϴ���·��֧�����·���������index.js�ļ��������·�����Ƽ�����
-ʾ����
-
-```php
-list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
-```
-
-**������˵����**
-
-1. $ret['ret']Ϊinit()������Ϣ
-2. $filePath�ļ����index.js·��
-
-### 4.4 �ϵ�����
-
-upload�ӿ�ͬʱ֧�ֶϵ�������ֻ�贫��init()����ֵ���ļ�·������upload�ӿڼ��ɣ�SDK���Զ���ѯ�ϵ㲢����������
-ʾ����
+调用upload接口，传入init()返回值和文件路径即可完成文件上传，路径支持相对路径（相对于index.js文件）或绝对路径（推荐）。
+示例：
 
 ```php
 list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
 ```
 
-**������˵����**
+**配置项说明：**
 
-1. $ret['ret']Ϊinit������Ϣ
-2. $filePath�ļ����index.js·��
+1. $ret['ret']为init()返回信息
+2. $filePath文件相对index.js路径
 
-## 5 һ���ϴ�������
+### 4.4 断点续传
+
+upload接口同时支持断点续传，只需传入init()返回值和文件路径调用upload接口即可，SDK会自动查询断点并进行续传。
+示例：
+
+```php
+list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
+```
+
+**配置项说明：**
+
+1. $ret['ret']为init返回信息
+2. $filePath文件相对index.js路径
+
+## 5 一个上传的例子
 
 ```php
 <?php
@@ -185,11 +185,9 @@ if ($err !== null) {
 }
 ```
 
-## 6 �汾���¼�¼
+## 6 版本更新记录
 
 v1.0.0
 
-1. Node-SDK��ʼ�汾���ṩ�㲥�ϴ��Ļ������ܣ��������ļ��ϴ����ϵ�������
+1. Node-SDK初始版本，提供点播上传的基本功能，包括：文件上传、断点续传。
 
-# php-sdk
-sdk for upload file to vcloud.163.com
