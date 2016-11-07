@@ -130,7 +130,7 @@ if ($err !== null) {
 示例：
 
 ```php
-list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
+list($ret, $err) = $uploadMgr->upload($opt,$ret['ret'],$filePath);
 ```
 
 **配置项说明：**
@@ -140,11 +140,11 @@ list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
 
 ### 4.4 断点续传
 
-upload接口同时支持断点续传，只需传入init()返回值和文件路径调用upload接口即可，SDK会自动查询断点并进行续传。
+upload接口同时支持断点续传，只需传入$opt,init()返回值和文件路径调用upload接口即可，SDK会自动查询断点并进行续传。
 示例：
 
 ```php
-list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
+list($ret, $err) = $uploadMgr->upload($opt,$ret['ret'],$filePath);
 ```
 
 **配置项说明：**
@@ -177,7 +177,7 @@ if ($err !== null) {
     die($err);
 }
 
-list($ret, $err) = $uploadMgr->upload($ret['ret'],$filePath);
+list($ret, $err) = $uploadMgr->upload($opt,$ret['ret'],$filePath);
 if ($err !== null) {
     var_dump($err);
 } else {
@@ -187,7 +187,7 @@ if ($err !== null) {
 
 ## 6 版本更新记录
 
-v1.0.0
+v1.0.1
 
 1. Node-SDK初始版本，提供点播上传的基本功能，包括：文件上传、断点续传。
 
