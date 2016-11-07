@@ -88,6 +88,34 @@ final class ResumeUploader
         return array($response->json(), null);
     }
 
+    /**
+     * 获取返回信息
+     * @param {String} $objectNames 上传文件的对象名列表
+     */
+    public static function getResInfo(
+        $opt,
+        $initData
+    ) {
+        $NONCE = (string)rand(0,pow(10, 16));
+        $CUR_TIME = (string)round(time()/ 1000);
+        $SHA1 = (string)self::getCheckSum($opt["secretKey"], $NONCE , $CUR_TIME);
+
+        $url  = Config::GET_RES_URL;
+        $headers = array('AppKey' =>$opt["accessKey"] ,'Nonce' =>$NONCE ,'CurTime' =>$CUR_TIME,'CheckSum' =>$SHA1,'Content-type'=>'application/json;charset=UTF-8');
+        $object = $initData['object'];
+
+        $objectNames=array($object);
+        $data = array();
+        $data["objectNames"] = $objectNames;      
+
+        $response = Client::post($url,json_encode($data),$headers);
+        if (!$response->ok()) {
+            return array(null, new Error($response));
+        }
+        $res = $response->json();
+        return array($res['ret']["list"][0], null);
+    }
+
 
     /**
      * 上传分片

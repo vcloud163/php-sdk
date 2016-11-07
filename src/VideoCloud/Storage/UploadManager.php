@@ -69,7 +69,7 @@ final class UploadManager
      * @param {string} $filePath   文件路径
      */
 
-    public function upload($initData,$filePath) 
+    public function upload($pot,$initData,$filePath) 
     {   
 
         $DEBUG = false;//设置是否打印日志
@@ -95,6 +95,7 @@ final class UploadManager
            }
 
         MyDB::createTable($db);
+
 
 
        //检查文件是否存在
@@ -164,11 +165,14 @@ final class UploadManager
         //删除文件
         MyDB::removeFile($fileData,$db);
 
-        if($DEBUG==true){
-            print_r('upload success.</br> File upload path:http://nos.netease.com/' . $fileData['nos_bucket'] . '/' . $fileData['nos_object']);
+        //获取视频返回信息，视频返回vid，图片返回imgId
+        list($ret, $err) = ResumeUploader::getResInfo($pot,$initData);
+        if ($err !== null) {
+           return array(null,$err);
+        } else {
+            return array($ret,null);
         }
-        $res = 'upload success.File upload path:http://nos.netease.com/' . $fileData['nos_bucket'] . '/' . $fileData['nos_object'];
-        return array($res,null);
+
     }
 
 
