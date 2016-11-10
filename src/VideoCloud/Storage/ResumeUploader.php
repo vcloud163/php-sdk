@@ -129,10 +129,14 @@ final class ResumeUploader
         $headers = array('x-nos-token'=>$fileData['nos_token'],'Content-type'=>'application/json;charset=UTF-8');
         $param = '?version=1.0&offset=' . $fileData['offset'] . '&complete=' . $fileData['finish'] . '&context=' . $fileData['nos_context'];
         $url  = $uploadIP . '/' . $fileData['nos_bucket'] . '/' . $fileData['nos_object'] . $param;
+//        print_r("上传参数:".$param.'</br>');
+//        print_r("上传地址:".$url.'</br>');
         $trunkLength = min(Config::BLOCK_SIZE, $fileData['filesize'] - $fileData['offset']);
+//        print_r("上传分片大小:".$trunkLength.'</br>');
 
         //读取文件上传信息
         $file = fopen($fileData['filepath'], 'rb');
+        fseek($file, $fileData['offset'], SEEK_SET);
         $data = fread($file, $trunkLength);
         fclose($file);
         if ($data === false) {
