@@ -42,7 +42,6 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param string $data 待编码的数据，一般为字符串
      *
      * @return string 编码后的字符串
-     * @link http://developer.qiniu.com/docs/v6/api/overview/appendix.html#urlsafe-base64
      */
     function base64_urlSafeEncode($data)
     {
@@ -107,13 +106,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     }
 
    /**
-     * 计算七牛API中的数据格式
+     * 计算API中的数据格式
      *
      * @param $bucket 待操作的空间名
      * @param $key 待操作的文件名
      *
-     * @return string  符合七牛API规格的数据格式
-     * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
+     * @return string  符合API规格的数据格式
      */
     function entry($bucket, $key)
     {

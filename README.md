@@ -47,7 +47,6 @@ use VideoCloud\Storage\UploadManager;
        "authors": [
            {
                "name": "VideoCloud",
-               // "email": "sdk@qiniu.com",
                "homepage": "http://vcloud.163.com/"
            }
        ],
