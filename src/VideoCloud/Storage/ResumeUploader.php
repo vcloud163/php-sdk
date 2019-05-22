@@ -26,7 +26,7 @@ final class ResumeUploader
         $SHA1 = (string)self::getCheckSum($opt["secretKey"], $NONCE , $CUR_TIME);
 
         $headers = array('AppKey' =>$opt["accessKey"] ,'Nonce' =>$NONCE ,'CurTime' =>$CUR_TIME,'CheckSum' =>$SHA1,'Content-type'=>'application/json;charset=UTF-8');
-        $body = array('originFileName'=>$fileName);
+        $body = array('originFileName'=>$fileName, 'userDefInfo' => $opt["userDefInfo"]);
         $body_ = json_encode($body);
 
         $response = Client::post(Config::GET_INIT_URL, $body_, $headers);
